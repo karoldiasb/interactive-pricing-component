@@ -1,12 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@600;800&display=swap');
-
-html{
-    font-family: 'Manrope';
-    color: var(--gray);
-    font-size: 1rem;
-}
-
-:root{
+:root {
     --very-pale-blue: hsl(230, 100%, 99%);
     --green: #4CD62B;
     --gray-line: #DCDDE0;
@@ -16,8 +9,29 @@ html{
     --dark-desaturated-blue: hsl(227, 35%, 25%);
     --white: hsl(0, 0%, 100%);
     --soft-cyan: hsl(174, 77%, 80%);
+    --strong-cyan: hsl(174, 86%, 45%);
     --light-grayish-red: hsl(14, 92%, 95%);
     --light-red: hsl(15, 100%, 70%);
+    --light-grayish-blue: hsl(224, 65%, 95%);
+}
+
+#draggable-container {
+    position: absolute;
+    z-index: 9;
+}
+
+#draggable-header {
+    z-index: 10;
+}
+
+html {
+    font-family: 'Manrope';
+    color: var(--gray);
+    font-size: 1rem;
+}
+
+a {
+    cursor: pointer;
 }
 
 .container {
@@ -26,7 +40,7 @@ html{
     display: flex;
     justify-content: center;
     align-items: center;
-} 
+}
 
 main {
     width: 90%;
@@ -56,12 +70,12 @@ main header {
     width: 100%;
 }
 
-header h2{
+header h2 {
     color: var(--dark-desaturated-blue);
     margin: 0 15%;
 }
 
-header h5{
+header h5 {
     font-weight: initial;
     margin: 0 25%;
 }
@@ -80,23 +94,23 @@ header h5{
     box-shadow: 1px 1px 2px 2px rgba(0, 0, 0, .05);
 }
 
-.box-content > div:first-child {
+.box-content>div:first-child {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.box-content > div:first-child p {
+.box-content>div:first-child p {
     text-transform: uppercase;
     font-size: .8rem;
 }
 
-.box-content > div:first-child p strong {
+.box-content>div:first-child p strong {
     color: var(--dark-desaturated-blue);
     font-size: 1.8rem;
 }
 
-.box-content > div:nth-child(2) {
+.box-content>div:nth-child(2) {
     display: flex;
     flex-direction: column;
     height: 6px;
@@ -105,45 +119,51 @@ header h5{
     position: relative;
 }
 
-.box-content > div:nth-child(2) > div{
+.box-content>div:nth-child(2)>div {
     height: 6px;
     border-radius: 10px;
     background: var(--soft-cyan);
 }
 
-.box-content > div:nth-child(2) > div img{
+.box-content>div:nth-child(2)>div img {
     position: absolute;
-    left: 50%;
+    left: 4px;
     top: -4px;
     filter: brightness(0) invert(1);
 }
 
-.box-content > div:nth-child(2) > div .circle {
+.box-content>div:nth-child(2)>div .circle {
     position: absolute;
     left: 49%;
     top: -12px;
     width: 30px;
     height: 30px;
     border-radius: 50%;
-    background: var(--soft-cyan);
+    background: var(--soft-cyan); 
 }
 
-.box-content > div:nth-child(3) {
+.box-content>div:nth-child(2)>div .onmove {
+    position: absolute;
+    left: 49%;
+    top: -12px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--strong-cyan);
+}
+
+.box-content>div:nth-child(3) {
     display: flex;
     justify-content: flex-end;
     gap: 2rem;
     align-items: center;
 }
 
-.box-content > div:nth-child(3) p {
+.box-content>div:nth-child(3) p {
     font-size: .8rem;
 }
 
-.box-content > div:nth-child(3) p a {
-    cursor: pointer;
-}
-
-.box-content > div:nth-child(3) p span {
+.box-content>div:nth-child(3) p span {
     background-color: var(--light-grayish-red);
     border-radius: 20px;
     padding: 2px;
@@ -151,61 +171,61 @@ header h5{
     font-weight: 800;
 }
 
-.box-content hr{
+.box-content hr {
     border-color: var(--light-grayish-red);
 }
 
-.box-content > div:nth-child(5) {
+.box-content>div:nth-child(5) {
     display: flex;
     justify-content: space-evenly;
     align-items: center;
     gap: 1rem;
 }
 
-.box-content > div:nth-child(5) p {
+.box-content>div:nth-child(5) p {
     font-size: 11px;
     margin-top: 10px;
     gap: 1rem;
 }
 
-.box-content > div:nth-child(5) button{
+.box-content>div:nth-child(5) button {
     width: 200px;
     height: 40px;
     border: 1px solid;
     border-radius: 20px;
     background: var(--dark-desaturated-blue);
+    color: var(--grayish-blue);
+    cursor: pointer;
+}
+
+.box-content>div:nth-child(5) button:hover {
     color: var(--white);
 }
 
-@media only screen and (max-width: 376px){
-    .box-content{
+@media only screen and (max-width: 376px) {
+    .box-content {
         width: auto;
         height: auto;
         margin: 0 25px;
     }
-
-    main{
+    main {
         width: 100%;
         height: 100vh;
         box-shadow: none;
     }
-
-    .box-content > div:first-child {
+    .box-content>div:first-child {
         display: flex;
         flex-direction: column;
         gap: 1rem;
     }
-
-    .box-content > div:nth-child(3) {
+    .box-content>div:nth-child(3) {
         gap: 1rem;
     }
-
-    .box-content > div:nth-child(5) {
+    .box-content>div:nth-child(5) {
         display: flex;
         flex-direction: column;
     }
-
-    .box-content > div:first-child > div {
+    .box-content>div:first-child>div {
         display: flex;
         flex-direction: column;
         height: 6px;
@@ -214,14 +234,12 @@ header h5{
         position: relative;
         width: 95%;
     }
-
-    .box-content > div:first-child > div > div {
+    .box-content>div:first-child>div>div {
         height: 6px;
         border-radius: 10px;
         background: var(--soft-cyan);
     }
-
-    .box-content > div:first-child > div > div .circle {
+    .box-content>div:first-child>div>div .circle {
         position: absolute;
         left: 49%;
         top: -12px;
@@ -230,15 +248,10 @@ header h5{
         border-radius: 50%;
         background: var(--soft-cyan);
     }
-
-    .box-content >  div:first-child > div > div img {
+    .box-content>div:first-child>div>div img {
         position: absolute;
-        left: 50%;
+        left: 3px;
         top: -4px;
         filter: brightness(0) invert(1);
     }
-    
 }
-
-
-
