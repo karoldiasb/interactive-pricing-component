@@ -1,16 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- displays site properly based on user's device -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- displays site properly based on user's device -->
 
   <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png">
-  
+
   <title>Frontend Mentor | Interactive pricing component</title>
 
   <style>
-    .attribution { font-size: 11px; text-align: center; }
-    .attribution a { color: hsl(228, 45%, 44%); }
+    .attribution {
+      font-size: 11px;
+      text-align: center;
+    }
+
+    .attribution a {
+      color: hsl(228, 45%, 44%);
+    }
   </style>
 
   <link rel="stylesheet" href="./css/reset.css">
@@ -27,28 +35,34 @@
           <h2> Simple, traffic-based pricing </h2>
           <h5> Sign-up for our 30-day trial. No credit card required.</h5>
         </header>
-    
+
         <div class="box-content">
           <div>
             <p>100k Pageviews</p>
-              <div v-show="isMobile">
-                <div style="width: 50%;">
+            <div v-show="isMobile">
+              <div :style="{width: width}">
+                <a @touchstart="dragTouch" ref="draggableContainer" id="draggable-container" style="left: 110px;">
                   <div class="circle"></div>
                   <img src="./images/icon-slider.svg" alt="icon-slider">
-                </div>
+                </a>
               </div>
+            </div>
             <p><strong>$16.00</strong> /month</p>
           </div>
           <div v-show="!isMobile">
-            <div style="width: 50%;">
-              <div class="circle"></div>
-              <img src="./images/icon-slider.svg" alt="icon-slider">
+            <div :style="{width: width}">
+              <a @mousedown="dragMouseDown" ref="draggableContainer" id="draggable-container" style="left: 155px;">
+                <div :class="isDown ? 'onmove' : 'circle'"></div>
+                <img src="./images/icon-slider.svg" alt="icon-slider">
+              </a>
+
             </div>
           </div>
           <div>
-            <p>Monthly Billing 
+            <p>Monthly Billing
               <a @click="clickToggle">
-                <i :class="toggleIsOn ? 'fas fa-toggle-on fa-lg' : 'fas fa-toggle-off fa-lg'"></i>
+                <i :class="isToggleOn ? 'fas fa-toggle-on fa-lg' : 'fas fa-toggle-off fa-lg'"
+                  :style="isToggleOn ? 'color:hsl(174, 77%, 80%)' : 'color:hsl(223, 50%, 87%)'"></i>
               </a>
             </p>
             <p>Yearly Billing
@@ -57,7 +71,7 @@
             </p>
             <p></p>
           </div>
-          <hr/>
+          <hr />
           <div>
             <div>
               <p><img src="./images/icon-check.svg" alt="icon-check"> Unlimited websites</p>
@@ -72,14 +86,16 @@
       </main>
     </div>
   </div>
-  
+
+
   <div class="attribution">
-    Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a>. 
+    Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a>.
     Coded by <a href="#">Karoline Dias Barreto</a>.
   </div>
 
   <script src="https://kit.fontawesome.com/a9282ddb61.js"></script>
   <script src="https://unpkg.com/vue@next"></script>
+
 
   <script>
     function isMobile() {
@@ -92,13 +108,42 @@
       data() {
         return {
           isMobile: isMobile(),
-          toggleIsOn: false,
-          barra: '50%'
+          isToggleOn: false,
+          width: isMobile() ? '110px' : '155px',
+          positions: {
+            clientX: undefined,
+            movementX: 0
+          },
+          isDown: false
         }
       },
-      methods:{
-        clickToggle: function(){
-          this.toggleIsOn = this.toggleIsOn ? false : true;
+      methods: {
+        clickToggle: function () {
+          this.isToggleOn = this.isToggleOn ? false : true;
+        },
+        dragMouseDown: function (event) {
+          event.preventDefault();
+          this.positions.clientX = event.clientX;
+          document.onmousemove = this.elementDrag;
+          document.onmouseup = this.closeDragElement;
+        },
+        elementDrag: function (event) {
+          event.preventDefault();
+          
+          this.positions.movementX = this.positions.clientX - event.clientX;
+          this.positions.clientX = event.clientX;
+
+          if (this.$refs.draggableContainer.offsetLeft - this.positions.movementX > 0 && this.$refs.draggableContainer.offsetLeft - this.positions.movementX < 320) {
+            this.$refs.draggableContainer.style.left = (this.$refs.draggableContainer.offsetLeft - this.positions.movementX) + 'px';
+            this.width = this.$refs.draggableContainer.style.left;
+          }
+
+          this.isDown = true;
+        },
+        closeDragElement() {
+          this.isDown = false;
+          document.onmouseup = null;
+          document.onmousemove = null;
         }
       }
     });
@@ -108,4 +153,5 @@
   </script>
 
 </body>
+
 </html>
