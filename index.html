@@ -38,20 +38,20 @@
 
         <div class="box-content">
           <div>
-            <p>100k Pageviews</p>
+            <p>{{pageviews}}k Pageviews</p>
             <div v-show="isMobile">
               <div :style="{width: width}">
-                <a @touchstart="dragTouch" ref="draggableContainer" id="draggable-container" style="left: 110px;">
+                <a ref="draggableContainer" id="draggable-container" style="left: 100px;">
                   <div class="circle"></div>
                   <img src="./images/icon-slider.svg" alt="icon-slider">
                 </a>
               </div>
             </div>
-            <p><strong>$16.00</strong> /month</p>
+            <p><strong>${{price}}.00</strong> /month</p>
           </div>
           <div v-show="!isMobile">
             <div :style="{width: width}">
-              <a @mousedown="dragMouseDown" ref="draggableContainer" id="draggable-container" style="left: 155px;">
+              <a @mousedown="dragMouseDown" ref="draggableContainer" id="draggable-container" style="left: 160px;">
                 <div :class="isDown ? 'onmove' : 'circle'"></div>
                 <img src="./images/icon-slider.svg" alt="icon-slider">
               </a>
@@ -69,7 +69,6 @@
               <span v-if="isMobile">-25%</span>
               <span v-else>25% discount</span>
             </p>
-            <p></p>
           </div>
           <hr />
           <div>
@@ -109,35 +108,42 @@
         return {
           isMobile: isMobile(),
           isToggleOn: false,
-          width: isMobile() ? '110px' : '155px',
+          width: isMobile() ? '100px' : '160px',
           positions: {
             clientX: undefined,
             movementX: 0
           },
-          isDown: false
+          isDown: false,
+          price: 16,
+          pageviews: 100,
         }
       },
       methods: {
-        clickToggle: function () {
+        clickToggle() {
           this.isToggleOn = this.isToggleOn ? false : true;
         },
-        dragMouseDown: function (event) {
+        dragMouseDown(event) {
           event.preventDefault();
           this.positions.clientX = event.clientX;
           document.onmousemove = this.elementDrag;
           document.onmouseup = this.closeDragElement;
         },
-        elementDrag: function (event) {
+        elementDrag(event) {
           event.preventDefault();
           
           this.positions.movementX = this.positions.clientX - event.clientX;
           this.positions.clientX = event.clientX;
 
-          if (this.$refs.draggableContainer.offsetLeft - this.positions.movementX > 0 && this.$refs.draggableContainer.offsetLeft - this.positions.movementX < 320) {
-            this.$refs.draggableContainer.style.left = (this.$refs.draggableContainer.offsetLeft - this.positions.movementX) + 'px';
+          const newPosition = this.$refs.draggableContainer.offsetLeft - this.positions.movementX;
+          
+          if (this.$refs.draggableContainer.offsetLeft - this.positions.movementX >= 0 && this.$refs.draggableContainer.offsetLeft - this.positions.movementX < 320) {
+            this.$refs.draggableContainer.style.left = newPosition + 'px';
             this.width = this.$refs.draggableContainer.style.left;
-          }
 
+            this.price = Math.ceil(newPosition * 0.1);
+            this.pageviews = Math.ceil(newPosition * 0.625);
+
+          }
           this.isDown = true;
         },
         closeDragElement() {
